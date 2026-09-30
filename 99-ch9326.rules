@@ -1,0 +1,8 @@
+# Let members of "plugdev" access the WCH CH9326 without root.
+# Install:  sudo cp 99-ch9326.rules /etc/udev/rules.d/ && sudo udevadm control --reload && sudo udevadm trigger
+# (the default Raspberry Pi OS user is already in plugdev; otherwise: sudo usermod -aG plugdev $USER)
+
+# Raw USB access (used by lib/ch9326.c via libusb)
+SUBSYSTEM=="usb", ATTR{idVendor}=="1a86", ATTR{idProduct}=="e010", MODE="0660", GROUP="plugdev"
+# hidraw access (for the libusb-free approach described in PROTOCOL.md)
+KERNEL=="hidraw*", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="e010", MODE="0660", GROUP="plugdev"
